@@ -1,0 +1,23 @@
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\rmdefault}{ptm}
+\renewcommand{\ttdefault}{pcr}
+
+% Title
+\def\org#1{\gdef\@org{#1}}
+\def\maketitle{
+	\newpage
+	\null
+	\vskip 1em
+	\begin{center}
+	\LARGE \@title\\
+	\vskip 1em
+	\normalsize \@author \\
+	\em \@org
+	\end{center}
+}
+
+% Abstract
+\def\abstract{\begin{center}
+{\bf ABSTRACT\vspace{-.5em}\vspace{0pt}}
+\end{center}}
+\def\endabstract{\par}
