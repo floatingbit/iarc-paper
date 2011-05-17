@@ -53,13 +53,13 @@
 \begin{people}
 \name{Christopher Li}
 \org{University of Southern California}
-\name{Another Author}
+\name{Rustom Jehangir}
 \org{University of Southern California}
 \end{people}
 
 %1) Abstract	5
 \begin{abstract}
-	In this paper, we introduce a Micro UAV system that can explore an unknown indoor space assistance from a positioning system (for example, GPS). The robot takes in various kind of sensing measurements, handles them with probabilistic theories, and completes tasks such as stabilization and SLAM. (5 points)
+	In this paper, we introduce a Micro UAV system that can explore an unknown indoor space without the assistance of a positioning system such as GPS. The robot takes in various kind of sensing measurements, handles them with probabilistic theories, and completes tasks such as stabilization and SLAM. (5 points)
 \end{abstract}
 
 %2) Introduction	5
@@ -68,44 +68,29 @@
 %    b1) Figure of overall system architecture 
 %  c) Yearly Milestones
 \section{Introduction (5)}
-The format shall be single-sided with text occupying a space no greater than 9 inches tall by 6.5 inches wide centered on each page. Font size shall be 12 point (serif font) with 14 point leading.
+The USC Aerial Robotics Team's \textit{Beohawk} quadcopter was designed to suit the requirements of the International Aerial Robotics Competition. The quadcopter uses a variety of sensors to measure and identify the environment it is in with the effort of searching for small object in a complex and unknown setting.
+
 \subsection{Statement of the Problem}
-Try to match the heading styles shown (12 point bold typeface in all caps, left justified, for first level headings, 12 point bold typeface in leading caps, left justified, for second level headings, and 12 point italicized plain typeface in leading caps, left justified, for third level headings). Limit your headings to three levels. This is a serif font, which means it has little ornamental marks com- ing off the edges of the letters as opposed to a sans serif font such as the following: which does not have these ornamental marks.
+The quadcopter must navigate a large, unknown environment to find a small object, retrieve it, and return, all while avoiding several potential hazards and completing the mission in a short period of time. The challenge in developing a robot that can solve such is problem is to recognize the environment based on the relatively inaccurate measurements provided by sensors and using that information to make decisions and take actions. 
 
 \subsection{Conceptual Solution to Solve the Problem}
-The body of the text, as shown here, is a 12 point font size with 14 point leading. New para- graphs are not indented from the left margin, however they are separated by a blank line. The font size tells you how large the letters are, and the leading tells you how much space there is between the lines of text. Center page numbers 1.25 cm (0.5 inches) just below the bottom of the lower text margin as shown on this page, and use the format, “Page n of x” with a sans serif typeface.
+The USC Aerial Robotics Team is implementing a solution based on a traditional approach to robotics with modifications for the mission and for the mechanics of the robot. The quadcopter is custom built to be within the required weight and size range but uses a commercial control board for low level control. An onboard computer uses the Robotic Operating System (ROS) and takes advantage of many of the packages and tools made available by public contributors. As a young team, much of the development is trial and error with much learning along the way.
 
 \subsubsection{Figure of Overall System Architecture}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
 
-Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+Figure \eqref{fig:architecture} shows the basic system architecture of the quadcopter. The quadcopter's low level control including stability, attitude control, altitude control, and position control are all performed by the low-level control board. This board is an Arduino based board that has sensors and motor outputs. It also receive radio-control signals and allows control to be over-ridden by a human pilot.
 
-\begin{table}[h]
-\centering
-\begin{tabular}{l  r  r  r}
-                                       & Used  & Avail. & Perc. \\
-  Number of Slices:                    &  684  & 4656  &  14\%  \\
-  Number of Slice Flip Flops:          &  198  & 9312  &   2\%  \\
-  Number of 4 input LUTs:              & 1316  & 9312  &  14\%  \\
-  Number of IOs:                       &   37  &       &      \\
-  Number of bonded IOBs:               &   36  &  232  &  15\%  \\
-  Number of BRAMs:                     &    2  &   20  &  10\%  \\
-  Number of MULT18X18SIOs:             &   10  &   20  &  50\%  \\
-  Number of GCLKs:                     &    2  &   24  &   8\%  \\
-\end{tabular}
-\caption{Resource usage.}
-\label{tab:usage}
-\end{table}
+The main computer is a small form-factor x86 based computer that handles higher level control. This computer is running ROS, which performs optical flow calculations for basic positional stability. This computer also runs the navigator that decides where the robot will move and what actions it will take. More computationally expensive processes such as SLAM, take place on an off-board computer with a more powerful processor and more memory.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=75mm]{images/butterfly.pdf}
-\caption{Dataflow of an 8-point radix-2 DIT FFT \cite{bib:butterfly}. $W_k^n$ represents the Twiddle factor $e^{-\frac{2\pi j}{N}kn}$.} 
-\label{fig:butterfly}
+\includegraphics[width=12cm]{Architecture-Diagram.png}
+\caption{General architecture of the Beohawk control system. [[[This needs to be updated but serves as a placeholder]]].} 
+\label{fig:architecture}
 \end{figure}
 
 \subsection{Yearly Milestones}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+Not sure what's supposed to go in here?
 
 
 %3) Air Vehicle	15
@@ -218,6 +203,23 @@ Use tables and figures to concisely state your point. A table title appears abov
 
 \subsection{Testing}
 Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l  r  r  r}
+                                       & Used  & Avail. & Perc. \\
+  Number of Slices:                    &  684  & 4656  &  14\%  \\
+  Number of Slice Flip Flops:          &  198  & 9312  &   2\%  \\
+  Number of 4 input LUTs:              & 1316  & 9312  &  14\%  \\
+  Number of IOs:                       &   37  &       &      \\
+  Number of bonded IOBs:               &   36  &  232  &  15\%  \\
+  Number of BRAMs:                     &    2  &   20  &  10\%  \\
+  Number of MULT18X18SIOs:             &   10  &   20  &  50\%  \\
+  Number of GCLKs:                     &    2  &   24  &   8\%  \\
+\end{tabular}
+\caption{Resource usage.}
+\label{tab:usage}
+\end{table}
 
 
 %7) Conclusion	5 
