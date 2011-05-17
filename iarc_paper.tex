@@ -1,27 +1,240 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage{iarc_latex_style}
-\usepackage{amssymb,amsmath,listings,url,verbatim}
+\usepackage{amssymb,amsmath,listings,url,verbatim,graphicx}
 
 \title{BeoHawk: Autonomous Quadrotor}
-\author{Chris Li}
-\org{University of Southern California}
-
 \begin{document}
+% Keep this in mind when writing
+%\begin{verbatim}
+%IARC Paper Outline
+%1) Abstract	5
+%2) Introduction	5
+%  a) Statement of the problem 
+%  b) Conceptual solution to solve the problem
+%    b1) Figure of overall system architecture 
+%  c) Yearly Milestones
+%3) Air Vehicle	15
+%  a) Propulsion and Lift System 
+%  b) Guidance, Nav., and Control 
+%    b1) Stability Augmentation System 
+%    b2) Navigation 
+%    b3) Figure of control system architecture 
+%  c) Flight Termination System
+%4) Payload	15
+%  a) Sensor Suite 
+%    a1) GNC Sensors 
+%    a2) Mission Sensors 
+%      a21) Target Identification 
+%      a22) Threat Avoidance 
+%  b) Communications 
+%  c) Power Management System 
+%  d) Sub-Vehicle (if any)
+%5) Operations	10
+%  a) Flight Preparations 
+%    a1) Checklist(s) 
+%  b) Man/Machine Interface
+%6) Risk Reduction	15
+%  a) Vehicle Status 
+%    a1) Shock/Vibration Isolation 
+%    a2) EMI/RFI Solutions 
+%  b) Safety 
+%  c) Modeling and Simulation 
+%  d) Testing
+%7) Conclusion	5 
+%8) References	5
+%Note paragraph numbers if referencing former papers
+%9) Overall Format, Completeness, and Readability 25 
+%TOTAL	100
+%\end{verbatim}
+%\break
+
+% The real paper starts here
 \maketitle
+\begin{people}
+\name{Christopher Li}
+\org{University of Southern California}
+\name{Another Author}
+\org{University of Southern California}
+\end{people}
 
+%1) Abstract	5
 \begin{abstract}
-	In this paper, we introduce a Micro UAV system that can explore an unknown indoor space assistance from a positioning system (for example, GPS). The robot takes in various kind of sensing measurements, handles them with probabilistic theories, and completes tasks such as stabilization and SLAM.
-	
-	This is a new paragraph.
+	In this paper, we introduce a Micro UAV system that can explore an unknown indoor space assistance from a positioning system (for example, GPS). The robot takes in various kind of sensing measurements, handles them with probabilistic theories, and completes tasks such as stabilization and SLAM. (5 points)
 \end{abstract}
-	
-\section{Software}
-	\subsection{3D visual perception and matching}
-	This is a Subsection
-	\subsubsection{Techniques}
-	This is a subsubsection.
-\section{Hardware}
 
-\section{Electrical}
+%2) Introduction	5
+%  a) Statement of the problem 
+%  b) Conceptual solution to solve the problem
+%    b1) Figure of overall system architecture 
+%  c) Yearly Milestones
+\section{Introduction (5)}
+The format shall be single-sided with text occupying a space no greater than 9 inches tall by 6.5 inches wide centered on each page. Font size shall be 12 point (serif font) with 14 point leading.
+\subsection{Statement of the Problem}
+Try to match the heading styles shown (12 point bold typeface in all caps, left justified, for first level headings, 12 point bold typeface in leading caps, left justified, for second level headings, and 12 point italicized plain typeface in leading caps, left justified, for third level headings). Limit your headings to three levels. This is a serif font, which means it has little ornamental marks com- ing off the edges of the letters as opposed to a sans serif font such as the following: which does not have these ornamental marks.
+
+\subsection{Conceptual Solution to Solve the Problem}
+The body of the text, as shown here, is a 12 point font size with 14 point leading. New para- graphs are not indented from the left margin, however they are separated by a blank line. The font size tells you how large the letters are, and the leading tells you how much space there is between the lines of text. Center page numbers 1.25 cm (0.5 inches) just below the bottom of the lower text margin as shown on this page, and use the format, “Page n of x” with a sans serif typeface.
+
+\subsubsection{Figure of Overall System Architecture}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l  r  r  r}
+                                       & Used  & Avail. & Perc. \\
+  Number of Slices:                    &  684  & 4656  &  14\%  \\
+  Number of Slice Flip Flops:          &  198  & 9312  &   2\%  \\
+  Number of 4 input LUTs:              & 1316  & 9312  &  14\%  \\
+  Number of IOs:                       &   37  &       &      \\
+  Number of bonded IOBs:               &   36  &  232  &  15\%  \\
+  Number of BRAMs:                     &    2  &   20  &  10\%  \\
+  Number of MULT18X18SIOs:             &   10  &   20  &  50\%  \\
+  Number of GCLKs:                     &    2  &   24  &   8\%  \\
+\end{tabular}
+\caption{Resource usage.}
+\label{tab:usage}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=75mm]{images/butterfly.pdf}
+\caption{Dataflow of an 8-point radix-2 DIT FFT \cite{bib:butterfly}. $W_k^n$ represents the Twiddle factor $e^{-\frac{2\pi j}{N}kn}$.} 
+\label{fig:butterfly}
+\end{figure}
+
+\subsection{Yearly Milestones}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+
+%3) Air Vehicle	15
+%  a) Propulsion and Lift System 
+%  b) Guidance, Nav., and Control 
+%    b1) Stability Augmentation System 
+%    b2) Navigation 
+%    b3) Figure of control system architecture 
+%  c) Flight Termination System
+\section{Air Vehicle (15)}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Propulsion and Lift System}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Guidance, Navigation, and Control}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsubsection{Stability Augmentation System}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsubsection{Navigation}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsubsection{Figure of Control System Architecture}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Flight Termination System}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+
+%4) Payload	15
+%  a) Sensor Suite 
+%    a1) GNC Sensors 
+%    a2) Mission Sensors 
+%      a21) Target Identification 
+%      a22) Threat Avoidance 
+%  b) Communications 
+%  c) Power Management System 
+%  d) Sub-Vehicle (if any)
+\section{Payload (15)}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Sensor Suite}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsubsection{GNC Sensors}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsubsection{Mission Sensors}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\paragraph{Target Identification}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\paragraph{Threat Avoidance}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Communications}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Power Management System}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Sub-Vehicle (we won't have one)}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+
+%5) Operations	10
+%  a) Flight Preparations 
+%    a1) Checklist(s) 
+%  b) Man/Machine Interface
+\section{Operations (10)}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Flight Preparations}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsubsection{Checklists}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+\subsection{Man/Machine Interface}
+All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+
+
+%6) Risk Reduction	15
+%  a) Vehicle Status 
+%    a1) Shock/Vibration Isolation 
+%    a2) EMI/RFI Solutions 
+%  b) Safety 
+%  c) Modeling and Simulation 
+%  d) Testing
+\section{Risk Reduction (15)}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\subsection{Vehicle Status}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\subsubsection{Shock/Vibration Isolation}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\subsubsection{EMI/RFI Solutions}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\subsection{Safety}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\subsection{Modeling and Simulation}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+\subsection{Testing}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+
+%7) Conclusion	5 
+\section{Conclusion (5)}
+Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+
+
+%8) References	5
+\bibliographystyle{IEEEbib}
+\begin{thebibliography}{10}
+\bibitem[1]{bib:guitarpitchshifter} \url{http://guitarpitchshifter.com/}
+\bibitem[2]{bib:mathworldfft} \url{http://mathworld.wolfram.com/FastFourierTransform.html}
+\bibitem[3]{bib:ctdft} 	Cooley, J. W. and J. W. Tukey, ``An Algorithm for the Machine Computation of the Complex Fourier Series," Mathematics of Computation, Vol. 19, April 1965, pp. 297-301.
+\bibitem[4]{bib:butterfly} Takala, J. and K. Punkka, ``Butterfly Unit Supporting Radix-4 and Radix-2 FFT," \url{http://ticsp.cs.tut.fi/images/4/48/Cr1028-riga.pdf}
+\bibitem[5]{bib:fftdit} \url{http://cnx.org/content/m12016/latest/}
+\bibitem[6]{bib:ffttricks} \url{http://cnx.org/content/m12021/latest/}
+\end{thebibliography}
+
 
 \end{document}
