@@ -45,7 +45,7 @@
 
 % Abstract
 \def\abstract{\begin{center}
-{\bf ABSTRACT\vspace{-0.5em}\vspace{0pt}}
+{\bf ABSTRACT\vspace{-0.0em}\vspace{0pt}}
 \end{center}
 \begin{center}
 \begin{minipage}{5.5in}
@@ -66,3 +66,7 @@
 \def\subparagraph{\@startsection
      {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus 
      .2ex}{-1em}{\normalsize\bf}}
+
+\usepackage{color}
+% Debugging
+\def\todo#1{\small{\textsf{\color{red}#1}}}

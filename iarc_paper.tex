@@ -4,51 +4,6 @@
 
 \title{BeoHawk: Autonomous Quadrotor}
 \begin{document}
-% Keep this in mind when writing
-%\begin{verbatim}
-%IARC Paper Outline
-%1) Abstract	5
-%2) Introduction	5
-%  a) Statement of the problem 
-%  b) Conceptual solution to solve the problem
-%    b1) Figure of overall system architecture 
-%  c) Yearly Milestones
-%3) Air Vehicle	15
-%  a) Propulsion and Lift System 
-%  b) Guidance, Nav., and Control 
-%    b1) Stability Augmentation System 
-%    b2) Navigation 
-%    b3) Figure of control system architecture 
-%  c) Flight Termination System
-%4) Payload	15
-%  a) Sensor Suite 
-%    a1) GNC Sensors 
-%    a2) Mission Sensors 
-%      a21) Target Identification 
-%      a22) Threat Avoidance 
-%  b) Communications 
-%  c) Power Management System 
-%  d) Sub-Vehicle (if any)
-%5) Operations	10
-%  a) Flight Preparations 
-%    a1) Checklist(s) 
-%  b) Man/Machine Interface
-%6) Risk Reduction	15
-%  a) Vehicle Status 
-%    a1) Shock/Vibration Isolation 
-%    a2) EMI/RFI Solutions 
-%  b) Safety 
-%  c) Modeling and Simulation 
-%  d) Testing
-%7) Conclusion	5 
-%8) References	5
-%Note paragraph numbers if referencing former papers
-%9) Overall Format, Completeness, and Readability 25 
-%TOTAL	100
-%\end{verbatim}
-%\break
-
-% The real paper starts here
 \maketitle
 \begin{people}
 \name{Christopher Li}
@@ -59,7 +14,7 @@
 
 %1) Abstract	5
 \begin{abstract}
-	In this paper, we introduce a Micro UAV system that can explore an unknown indoor space without the assistance of a positioning system such as GPS. The robot takes in various kind of sensing measurements, handles them with probabilistic theories, and completes tasks such as stabilization and SLAM. (5 points)
+	In this paper, we introduce a Micro UAV system that can explore an unknown indoor space without the assistance of a positioning system such as GPS. The robot takes in various kind of sensing measurements, handles them with probabilistic theories, and completes tasks such as stabilization and SLAM. \todo{Finish abstract at the end} (5 points)
 \end{abstract}
 
 %2) Introduction	5
@@ -84,13 +39,13 @@ The main computer is a small form-factor x86 based computer that handles higher 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=12cm]{Architecture-Diagram.png}
-\caption{General architecture of the Beohawk control system. [[[This needs to be updated but serves as a placeholder]]].} 
+\includegraphics[width=12cm]{images/Architecture-Diagram.png}
+\caption{General architecture of the Beohawk control system. \todo{This needs to be updated but serves as a placeholder}.} 
 \label{fig:architecture}
 \end{figure}
 
 \subsection{Yearly Milestones}
-Not sure what's supposed to go in here?
+\todo{Not sure what's supposed to go in here?}
 
 
 %3) Air Vehicle	15
@@ -101,19 +56,25 @@ Not sure what's supposed to go in here?
 %    b3) Figure of control system architecture 
 %  c) Flight Termination System
 \section{Air Vehicle (15)}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
 
 \subsection{Propulsion and Lift System}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\emph{Beohawk} has four rotors, each an equal distance from the quadcopter's center.  Two opposite motors spin clockwise and the other two spin counter-clockwise, which generates a net torque of zero.  Hence, the quadcopter does not need a separate rotor to control yaw like a conventional helicopter, and can control yaw by adjusting the proportion of rotor speeds.  \todo{Todo: More details on these rotors}
 
 \subsection{Guidance, Navigation, and Control}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
 
 \subsubsection{Stability Augmentation System}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\todo{Something about stability}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{images/overview_tf.png}
+\caption{Navigation system of Beohawk. \todo{This is a placeholder}.} 
+\label{fig:navi}
+\end{figure}
 
 \subsubsection{Navigation}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+Navigation is done in 2D using the navigation ROS package. Figure \eqref{fig:navi} shows the inputs to the navigation stack. Mission control is managed with a state machine that keeps track of the current objective.  \todo{Possibly a state diagram? To finish later}
+
 
 \subsubsection{Figure of Control System Architecture}
 All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
@@ -154,10 +115,6 @@ All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowe
 
 \subsection{Power Management System}
 All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
-
-\subsection{Sub-Vehicle (we won't have one)}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
-
 
 %5) Operations	10
 %  a) Flight Preparations 
