@@ -25,28 +25,27 @@
 \section{Introduction (5)}
 The USC Aerial Robotics Team's \textit{Beohawk} quadcopter was designed to suit the requirements of the International Aerial Robotics Competition. The quadcopter uses a variety of sensors to measure and identify the environment it is in with the effort of searching for small object in a complex and unknown setting.
 
-\subsection{Statement of the Problem}
-The quadcopter must navigate a large, unknown environment to find a small object, retrieve it, and return, all while avoiding several potential hazards and completing the mission in a short period of time. The challenge in developing a robot that can solve such is problem is to recognize the environment based on the relatively inaccurate measurements provided by sensors and using that information to make decisions and take actions. 
+\subsection{Problem Statement}
+For the 6th IARC mission, our quadcopter must navigate an unknown office environment to find a small flash drive, retrieve it, and return in under ten minutes while avoiding detection.  The vehicle, which must weigh under 1.5kg, must operate autonomously, which introduces the challenge of mapping and navigating an environment sensed with instruments that have random errors and noise. 
 
-\subsection{Conceptual Solution to Solve the Problem}
-The USC Aerial Robotics Team is implementing a solution based on a traditional approach to robotics with modifications for the mission and for the mechanics of the robot. The quadcopter is custom built to be within the required weight and size range but uses a commercial control board for low level control. An onboard computer uses the Robotic Operating System (ROS) and takes advantage of many of the packages and tools made available by public contributors. As a young team, much of the development is trial and error with much learning along the way.
+\subsection{Conceptual Solution}
+The USC Aerial Robotics Team is implementing a solution based on a traditional approach to robotics with modifications for the mission and for the mechanics of the robot. The quadcopter is custom built to be within the required weight and size range but uses a commercial control board for low level control. An onboard computer uses the Robotic Operating System (ROS) and takes advantage of many of the packages and tools made available by public contributors. 
 
 \subsubsection{Figure of Overall System Architecture}
 
 Figure \eqref{fig:architecture} shows the basic system architecture of the quadcopter. The quadcopter's low level control including stability, attitude control, altitude control, and position control are all performed by the low-level control board. This board is an Arduino based board that has sensors and motor outputs. It also receive radio-control signals and allows control to be over-ridden by a human pilot.
 
-The main computer is a small form-factor x86 based computer that handles higher level control. This computer is running ROS, which performs optical flow calculations for basic positional stability. This computer also runs the navigator that decides where the robot will move and what actions it will take. More computationally expensive processes such as SLAM, take place on an off-board computer with a more powerful processor and more memory.
+The main computer is a Pico-ITX form-factor x86 based computer that handles higher level control. This computer runs ROS, which performs optical flow calculations for basic positional stability. \sout{This computer also runs the navigator that decides where the robot will move and what actions it will take. More computationally expensive processes such as SLAM, take place on an off-board computer with a more powerful processor and more memory.} Mission planning, navigation, and SLAM take place on the base station, which has a more powerful processor and more memory. The quadcopter publishes sensor data and subscribes to navigation positions from the base station.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=12cm]{images/Architecture-Diagram.png}
-\caption{General architecture of the Beohawk control system. \todo{This needs to be updated but serves as a placeholder}.} 
+\includegraphics[width=14cm]{images/beohawk-system-arch.pdf}
+\caption{General architecture of the Beohawk control system. \todo{This needs to be completed}.} 
 \label{fig:architecture}
 \end{figure}
 
 \subsection{Yearly Milestones}
-\todo{Not sure what's supposed to go in here?}
-
+This is USC's first appearance at the IARC and our team's first competition. This year we hope to develop a platform capable of mapping and navigating the environment.  If we do not complete the goals, we will continue refining the quadcopter. \todo{eh.. feels lacking}
 
 %3) Air Vehicle	15
 %  a) Propulsion and Lift System 
@@ -93,22 +92,21 @@ All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowe
 %  c) Power Management System 
 %  d) Sub-Vehicle (if any)
 \section{Payload (15)}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
-
 \subsection{Sensor Suite}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\subsubsection{Microsoft Kinect}
+The Kinect uses an infrared laser array of 640x480 points to provide depth information at 2048 levels of sensitivity. A ROS package uses the Kinect to produce a point cloud, which gives BeoHawk a plane of vision.
 
-\subsubsection{GNC Sensors}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\subsubsection{Camera}
+The quadcopter employs a downward facing camera to detect drift. The on-board computer runs an optical flow algorithm to reduce drift. \todo{Let's see that camera}
 
-\subsubsection{Mission Sensors}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\subsubsection{Sonar}
+The quadcopter also uses sonar to determine altitude. By fixing the altitude, BeoHawk can use 2D SLAM. \todo{More about sonar}
 
-\paragraph{Target Identification}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\subsubsection{Target Identification}
+\todo{Reading signs}
 
-\paragraph{Threat Avoidance}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+\subsubsection{Threat Avoidance}
+\todo{How will we dodge the laser tripwires?}
 
 \subsection{Communications}
 All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
@@ -130,7 +128,7 @@ All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowe
 All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
 
 \subsection{Man/Machine Interface}
-All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowed to violate margins. Papers are limited to 12 pages (including figures and references, if any). The format shall be single-sided with text occupying a space no greater than 22.86 cm (9 inches) tall by 16.51 cm (6.5 inches) wide centered on each page.
+The base station displays BeoHawk's current mission and status inferred from the sensor data returned by BeoHawk.  If the link is terminated, BeoHawk will attempt to hover in place until the connection is restored. In addition, the quadcopter will be connected to a human operator who will assume control of the quadcopter if anything goes wrong.
 
 
 %6) Risk Reduction	15
@@ -140,14 +138,12 @@ All pages have 2.5cm (1 inch) margins on all sides. Only page numbers are allowe
 %  b) Safety 
 %  c) Modeling and Simulation 
 %  d) Testing
-\section{Risk Reduction (15)}
-Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
-
+\section{Risk Reduction}
 \subsection{Vehicle Status}
-Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+BeoHawk transmits battery information, sensor information, and current objective to the base station. 
 
 \subsubsection{Shock/Vibration Isolation}
-Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
+\todo{Something about the material?}
 
 \subsubsection{EMI/RFI Solutions}
 Use tables and figures to concisely state your point. A table title appears above the table it references and appears in all caps and centered, whereas a figure title appears beneath the figure and with only leading capitalization. Both table and figure titles are italicized as shown in the examples below:
@@ -187,7 +183,7 @@ Use tables and figures to concisely state your point. A table title appears abov
 %8) References	5
 \bibliographystyle{IEEEbib}
 \begin{thebibliography}{10}
-\bibitem[1]{bib:guitarpitchshifter} \url{http://guitarpitchshifter.com/}
+\bibitem[1]{bib:kinectinfo} \url{http://git.marcansoft.com/?p=libfreenect.git;a=summary/}
 \bibitem[2]{bib:mathworldfft} \url{http://mathworld.wolfram.com/FastFourierTransform.html}
 \bibitem[3]{bib:ctdft} 	Cooley, J. W. and J. W. Tukey, ``An Algorithm for the Machine Computation of the Complex Fourier Series," Mathematics of Computation, Vol. 19, April 1965, pp. 297-301.
 \bibitem[4]{bib:butterfly} Takala, J. and K. Punkka, ``Butterfly Unit Supporting Radix-4 and Radix-2 FFT," \url{http://ticsp.cs.tut.fi/images/4/48/Cr1028-riga.pdf}
