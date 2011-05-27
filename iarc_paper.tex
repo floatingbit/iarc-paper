@@ -23,19 +23,18 @@
 %    b1) Figure of overall system architecture 
 %  c) Yearly Milestones
 \section{Introduction}
-The USC Aerial Robotics Team's \textit{Beohawk} quadrotor was designed to suit the requirements of the International Aerial Robotics Competition. The quadrotor uses a variety of sensors to measure and identify the environment it is in with the effort of searching for small object in a complex and unknown setting.
 
 \subsection{Problem Statement}
-For the sixth IARC mission, our quadrotor must navigate an unknown office environment to find a small flash drive, retrieve it, and return in under ten minutes while avoiding detection.  The vehicle, which weighs under 1.5kg, must also operate autonomously, which introduces the challenge of mapping and navigating an environment sensed with instruments that have random errors and noise. 
+
+As the requirement of the current International Aerial Robotics Competition (IARC 2011), an aerial robot vehicle not heavier than 1.5 kilograms should explore an unknown, office-style floor of a building, localize itself according to the environment, identify and pick up a target object (a black USB drive specifically), and return to the starting point within given time limit. The robot should also complete the above tasks totally autonomously and reduce various types of random sensing and system noises. Additionally, the robot may also be intelligent to identify mission-related features (e.g. signature on each door of rooms) as well as observing and avoiding obstacles or surveillance devices while traversing the hallway.
 
 \subsection{Conceptual Solution}
-The USC Aerial Robotics Team is implementing a solution based on a traditional approach to autonomous robotics with modifications for the mission and for the mechanics of the robot. The quadrotor is custom built to be within the required weight and size range and uses a commercial control board for low level control. An onboard computer uses the Robotic Operating System (ROS) and takes advantage of many of the packages and tools made available by public contributors. 
+
+The Aerial Robotics Team (ART) of the USC Robotics Society (USCRS) purposes a quadrotor design of its aerial robot vehicle called \textit{Beohawk}, which consists of four motors located symmetrically at each end of a X-shape frame. The whole frame of the quadrotor is custom built by our team members to be within the required weight and size range. Various sensors, Inertial Sensor board, on-board computer and other facilities are located at the center of the frame. An off-board computing station is dedicated to the majority of computational tasks; it receives data from the on-board computer, fuse and process these data in order to make judgments on future movements of the robot, and then publish operating commands back. The communication is based on standard Wi-Fi network. Both computers have mission-specific programs written by our team. These programs run on the Robotic Operating System (ROS) and take advantages of many of the packages and tools made available by public contributors. By utilizing inertial and visual sensing data from various source and having these data handled by state-of-the-art algorithms, we hope our quadrotor to perform stabilization, navigation and mission planning successfully.
 
 \subsubsection{Figure of Overall System Architecture}
 
 Figure \eqref{fig:architecture} shows the basic system architecture of the quadrotor. The quadrotor's low level control including stability, attitude control, altitude control, and position control are all performed by the low-level control board. This board is an Arduino based board that has sensors and motor outputs. It also receives radio-control signals and allows control to be over-ridden by a human pilot.
-
-The main computer is a Pico-ITX form-factor x86 based computer that handles higher level control. This computer runs ROS, which performs optical flow calculations for basic positional stability. \sout{This computer also runs the navigator that decides where the robot will move and what actions it will take. More computationally expensive processes such as SLAM, take place on an off-board computer with a more powerful processor and more memory.} Mission planning, navigation, and SLAM take place on the base station, which has a more powerful processor and more memory. The quadrotor publishes sensor data and subscribes to navigation positions from the base station.
 
 \begin{figure}[h]
 \centering
@@ -45,7 +44,10 @@ The main computer is a Pico-ITX form-factor x86 based computer that handles high
 \end{figure}
 
 \subsection{Yearly Milestones}
-This is USC's first appearance at the IARC and our team's first competition. This year we hope to develop a platform capable of mapping and navigating the environment.  If we do not complete the goals, we will continue refining the quadrotor. \todo{eh.. feels lacking}
+
+This is USC Robotics Sotiety's first appearance at IARC as well as the very first appearance in robotics competition. Our hardware team has developed three models for the frame in the past two years. Our latest model uses strong, lightweight carbon fiber to build up the frame. The software team has been researching on various kind of algorithms for UAV stabilization and navigation, and has tried to develop 3D visual navigation systems through both a probablistic approach and a graph approach,  which will be discussed later in detail. Our electronic team has designed customized circuit board that replace the commercialized alternatives (such as Arduino board). Regardless of the outcome of competition, the Aerial Robotics Team will continue refining hardware frames, circuit designs, as well as software algorithms and visualization interfaces.
+
+% picuture of the frame (solidworks) 
 
 %3) Air Vehicle	15
 %  a) Propulsion and Lift System 
@@ -62,11 +64,12 @@ This is USC's first appearance at the IARC and our team's first competition. Thi
 \subsection{Guidance, Navigation, and Control}
 
 \subsubsection{Stability Augmentation System}
-Beohawk stabilizes itself through a control loop instead of relying on mechanical stability. 
-\todo{Something about stability}
-Center: carbon fiber
-standoffs: alu
-motor arms: carbon fiber
+
+Before a quadrotor flies anywhere, stablization should be done to keep it hovering successfully in the air instead of drifting or crashing unexpectedly from its original position. Simply having equal thrust in all four motors won't solve the problem because of the asymmetrical distribution of weight across the quadrotor's body. Instead, we apply a dynamic system for measuring the drift of the quadrotor's position as well as correcting this drift.
+
+Several sensor measurements are proved to have strong, reliable relationships with the position (translation and/or rotation) of the robot. Monitoring their changes can give us very useful knowledge about how much the robot drifts from its original position. We use direct-cosine matrix algorithm (DCM) [citation needed] to provide an optimized result of the real-time orientation of the robot. This algorithm utilize the three-axis linear acceleration and angular velocity measurements from the onboard inertial measuring unit (also known as IMU). Since linear acceleration readings from accelerometer appear to have high accuracy in long term while angular velocity readings from gyroscope tend to drift through time, DCM algorithm actually uses acceleration information to correct the gyroscope readings, thereby giving an almost drift-free info about robot's orientation. In addition, we also use a downward-facing camera to calculate the optical flow [citation needed] of salient, time-independent visual features. By doing so, we are able to figure out the motion trajectory of this camera, a technique called “structure from motion” [citation needed]. A sonar sensor is also mounted on the bottom of the quadrotor. This devices measures a much more accurate relative height of the robot from the ground, and is used to improve the result of the optical flow. The cooperation of DCM algorithm for IMU and the structure-from-motion technique for visual camera ensures us to keep track of robot's linear and angular position in real time.
+
+Finally, this system uses a PID control loop [citation needed] to handle the stabilization issue given these position-related measurements. This control loop constantly updates the proportion changes, integrals and derivatives of each monitoring variable, and to generate the motor commands that can best keep these figures away from drifting. The system also uses an Extended Kalman Filter to correct the position estimation from optical flow algorithm in order to get rid of unpredicted noises in visual feature recognition and matching.
 
 \begin{figure}[h]
 \centering
@@ -76,7 +79,12 @@ motor arms: carbon fiber
 \end{figure}
 
 \subsubsection{Navigation}
-Navigation is done in 2D using the navigation ROS package. Figure \eqref{fig:navi} shows the inputs to the navigation stack. Mission control is managed with a state machine that keeps track of the current objective.  \todo{Possibly a state diagram? To finish later}
+
+Simultaneous localization and mapping (as known as SLAM for short) has been the central problem for  robotics application in unknown circumstances. The purpose of the SLAM is to predict, as accurate as possible, the position of the robot based on its knowledge of its surrounded environment. We obtain the 3D position of visual salient features, calculate the affine transformation of the camera through time. Combining this knowledge with the gyroscope and optical flow readings in the stabilization part, we can set up a optimization system to reduce the effect of random errors. Further planning of waypoints will be based on these results from the SLAM process.
+
+In this project, we use a infrared-powered depth camera that can tell how far one given pixel is away from the camera. Combining this depth camera with a traditional RGB camera, we are able to create a 3D model (or “point cloud”) of the visual perception as well as matching them in 3D to figure out the camera trajectory. Blindly matching every point across point clouds requires a huge amount of time and energy to process; instead we only match the points from different clouds that we know are of the same thing in the real environment. Singular value decomposition is used to produce the translation and rotation matrix.
+
+While we can get the 6 degree-of-freedom position and orientation status of the robot, we only need the Navigation done in 2D, because the place our robot will explore is a single plane floor. We plan to use the official 2D navigation package from ROS. Figure \eqref{fig:navi} shows the inputs to the navigation stack. Mission control is managed with a state machine that keeps track of the current objective.  \todo{Possibly a state diagram? To finish later}
 
 
 \subsubsection{Figure of Control System Architecture}
@@ -114,15 +122,17 @@ Using a downward facing camera, the quadrotor runs an optical flow algorithm on 
 Though the quadrotor has an estimate of altitude from the Kinect, it may be noisy and as such, the quadrotor also employs sonar to determine altitude.  A \todo{model/part number} is installed facing downwards.
 
 \subsubsection{Target Identification}
-\todo{Reading signs}
+
+Since the USB is a black object located on a white table surface, simply using a edge or contrast detection algorithm will easily identify the USB as a salient feature. While the 3D visual sensor may not be enough accurate to tell the dimension of the USB, it can sense the much larger box containing the USB and therefore helps a lot in target identification. 
+
+Identifying the signatures on the doors to different rooms is a tough task, because arabic alphabets can be hard to identify by using traditional OCR technology, especially in the case that our robot may look at the signature in one given perspective, which result in a affine transformation of the signature image that makes the identification process harder. We use a scale/rotation invarient feature detection algorithm called "SURF" to tackle this problem. Basically this algorithm tries to match the picture it sees and the template in the database by trying numerous cases of different transformations. This algorithm is proved successful in matching pictures regardless of scale, rotation or gradient constraints.
 
 \subsubsection{Threat Avoidance}
 \todo{How will we dodge the laser tripwires?}
 
 \subsection{Communications}
-The Pico-ITX computer aboard the quadrotor communicates with the Arduino over an SPI bus running at \todo{n} Hz.  It also communicates with the base station over a 2.4GHz wifi link.  The communication rate varies by sensor topic. The Pico publishes the Kinect point cloud at \todo{n} Hz, the camera images at \todo{n} Hz, and the vehicle status and battery info at \todo{n} Hz.
 
-The Arduino communicates with the power board with I$^2$C at \todo{n} Hz. It also connects to an RC control device that operates at \todo{n} GHz.
+A Wi-Fi network is established between an on-board computer and a ground station. This network is time-synchronized and supports functionalities on both machines to communicate with each other through the ROS message system. While camera sensors are well supported by ROS, inertial sensor data and motor command have to go through serial communication. Since serial communication has not been implemented in ROS distribution so far, we developed a serial communication node that provides a protocol for exchanging messages safely through serial communication, which greatly improves the reliability of whole system. The sensor board communicates with the power board with I$^2$C technology at \todo{n} Hz. It also connects to an RC control device that operates at \todo{n} GHz. Inertial sensors are read at \todo{n} Hz, while visual sensing streams has a rate of 30 Hz for 2D images and a rate of 15 Hz for depth images.
 
 \subsection{Power Management System}
 Beohawk is powered by a 7.4V 500mAh Lithium-Polymer battery pack, which provides enough energy to run at least ten minutes. A power regulator board controls the battery and motor speed.  In the event of low power, the base station initiates a controlled descent to avoid damage to the quadrotor. 
