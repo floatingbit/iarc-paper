@@ -53,22 +53,24 @@ This is USC Robotics Sotiety's first appearance at IARC as well as the very firs
 %  a) Propulsion and Lift System 
 %  b) Guidance, Nav., and Control 
 %    b1) Stability Augmentation System 
-%    b2) Navigation 
-%    b3) Figure of control system architecture 
-%  c) Flight Termination System
+%    b2) Simultaneous Localization and Mapping
+%    b3) Navigation
+%    b4) Figure of control system architecture 
+%    b5) Target Identification and Threat Avoidance
+%  d) Flight Termination System
 \section{Air Vehicle}
 
 \subsection{Propulsion and Lift System}
-\emph{Beohawk} has four rotors, each an equal distance from the quadrotor's center.  Two opposite motors spin clockwise and the other two spin counter-clockwise, which generates a net torque of zero.  Hence, the quadrotor does not need a separate rotor to control yaw like a conventional helicopter, and can control yaw by adjusting the proportion of rotor speeds.  \todo{Todo: More details on these rotors}
+\emph{Beohawk} has four rotors, each an equal distance from the quadrotor's center.  Two opposite motors spin clockwise and the other two spin counter-clockwise, which generates a net torque of zero.  Hence, the quadrotor does not need a separate rotor to control yaw like a conventional helicopter, and can control yaw by adjusting the proportion of rotor speeds.  \todo{Todo: More details on these rotors} \todo{may briefly explain the advantage of quadrotor design in the aspect of vehicle purposion}
 
 \subsection{Guidance, Navigation, and Control}
 
 \subsubsection{Stability Augmentation System}
 
 Before a quadrotor flies anywhere, stablization should be done to keep it hovering successfully in the air instead of drifting or crashing unexpectedly from its original position. Simply having equal thrust in all four motors won't solve the problem because of the asymmetrical distribution of weight across the quadrotor's body. Instead, we apply a dynamic system for measuring the drift of the quadrotor's position as well as correcting this drift.
-
+\\
 Several sensor measurements are proved to have strong, reliable relationships with the position (translation and/or rotation) of the robot. Monitoring their changes can give us very useful knowledge about how much the robot drifts from its original position. We use direct-cosine matrix algorithm (DCM) [citation needed] to provide an optimized result of the real-time orientation of the robot. This algorithm utilize the three-axis linear acceleration and angular velocity measurements from the onboard inertial measuring unit (also known as IMU). Since linear acceleration readings from accelerometer appear to have high accuracy in long term while angular velocity readings from gyroscope tend to drift through time, DCM algorithm actually uses acceleration information to correct the gyroscope readings, thereby giving an almost drift-free info about robot's orientation. In addition, we also use a downward-facing camera to calculate the optical flow [citation needed] of salient, time-independent visual features. By doing so, we are able to figure out the motion trajectory of this camera, a technique called “structure from motion” [citation needed]. A sonar sensor is also mounted on the bottom of the quadrotor. This devices measures a much more accurate relative height of the robot from the ground, and is used to improve the result of the optical flow. The cooperation of DCM algorithm for IMU and the structure-from-motion technique for visual camera ensures us to keep track of robot's linear and angular position in real time.
-
+\\
 Finally, this system uses a PID control loop [citation needed] to handle the stabilization issue given these position-related measurements. This control loop constantly updates the proportion changes, integrals and derivatives of each monitoring variable, and to generate the motor commands that can best keep these figures away from drifting. The system also uses an Extended Kalman Filter to correct the position estimation from optical flow algorithm in order to get rid of unpredicted noises in visual feature recognition and matching.
 
 \begin{figure}[h]
@@ -78,14 +80,23 @@ Finally, this system uses a PID control loop [citation needed] to handle the sta
 \label{fig:navi}
 \end{figure}
 
+\subsubsection{Simultaneous Localization and Mapping}
+
+Simultaneous localization and mapping (as known as SLAM for short) has been the central problem for robotics application in unknown circumstances. The purpose of the SLAM is to predict, as accurate as possible, the position of the robot based on its knowledge of its surrounded environment. We obtain the 3D position of visual salient features, calculate the affine transformation of the camera through time. Combining this knowledge with the gyroscope and optical flow readings in the stabilization part, we can set up a optimization system to reduce the effect of random errors.
+\\
+In this project, we use a infrared-powered depth camera that can tell how far one given pixel is away from the camera. Combining this depth camera with a traditional RGB camera, we are able to create a 3D model (or “point cloud”) of the visual perception as well as matching them in 3D to figure out the camera trajectory. Blindly matching every point across point clouds requires a huge amount of time and energy to process; instead we only match the points representing the same object in the real world from different clouds. Singular value decomposition is used to process the matching result and to produce the translation and rotation matrix.
+\\
+Result from the 3D visual matching and transformation calculation described above is the major source of pose estimation. To further optimize the localization result, we will use either a probablistic system or a graph system. The probablistic system utilizes a Monte-Carlo theory based particle filter [citation needed] to generate most possible result; it only depends on the probability distribution of pose at the most recent time. The graph system, on the other hand, creates a graph where vertices are the poses and edges are the transformation constraints between poses. The graph system doesn't require us to simulate the probability model of system, control or sensing inputs, but requires more computational power to manage the graph.
+
+\todo{a picture for particle filter and a picture for graph system}
+
 \subsubsection{Navigation}
 
-Simultaneous localization and mapping (as known as SLAM for short) has been the central problem for  robotics application in unknown circumstances. The purpose of the SLAM is to predict, as accurate as possible, the position of the robot based on its knowledge of its surrounded environment. We obtain the 3D position of visual salient features, calculate the affine transformation of the camera through time. Combining this knowledge with the gyroscope and optical flow readings in the stabilization part, we can set up a optimization system to reduce the effect of random errors. Further planning of waypoints will be based on these results from the SLAM process.
+While we can get the 6 degree-of-freedom position and orientation status of the robot, we only need the Navigation done in 2D, because the place our robot will explore is a single plane floor. We plan to use the official 2D navigation package from ROS.
 
-In this project, we use a infrared-powered depth camera that can tell how far one given pixel is away from the camera. Combining this depth camera with a traditional RGB camera, we are able to create a 3D model (or “point cloud”) of the visual perception as well as matching them in 3D to figure out the camera trajectory. Blindly matching every point across point clouds requires a huge amount of time and energy to process; instead we only match the points from different clouds that we know are of the same thing in the real environment. Singular value decomposition is used to produce the translation and rotation matrix.
+\todo{a list of states in the state machien!}
 
-While we can get the 6 degree-of-freedom position and orientation status of the robot, we only need the Navigation done in 2D, because the place our robot will explore is a single plane floor. We plan to use the official 2D navigation package from ROS. Figure \eqref{fig:navi} shows the inputs to the navigation stack. Mission control is managed with a state machine that keeps track of the current objective.  \todo{Possibly a state diagram? To finish later}
-
+Figure \eqref{fig:navi} shows the inputs to the navigation stack. Mission control is managed with a state machine that keeps track of the current objective.  \todo{Possibly a state diagram? To finish later}
 
 \subsubsection{Figure of Control System Architecture}
 
@@ -98,44 +109,46 @@ While we can get the 6 degree-of-freedom position and orientation status of the 
 
 \todo{And an explanation}
 
+\subsubsection{Target Identification and Threat Avoidance}
+
+Since the USB is a black object located on a white table surface, simply using a edge or contrast detection algorithm will easily identify the USB as a salient feature. While the 3D visual sensor may not be enough accurate to tell the dimension of the USB, it can sense the much larger box containing the USB and therefore helps a lot in target identification. 
+\\
+Identifying the signatures on the doors to different rooms is a tough task, because arabic alphabets can be hard to identify by using traditional OCR technology, especially in the case that our robot may look at the signature in unknown perspective, which result in a affine transformation of the signature image that makes the identification process harder. We use a scale/rotation invarient feature detection algorithm called "SURF" to tackle this problem. Basically this algorithm tries to match the picture it sees and the template in the database by trying numerous cases of different transformations. This algorithm is proved successful in matching pictures regardless of scale, rotation or gradient constraints.
+\\
 \subsection{Flight Termination System}
 Because the RC controller communicates directly with the Arduino, the safety pilot can terminate the operation of the quadrotor in the event it is needed.
 
 %4) Payload	15
 %  a) Sensor Suite 
-%    a1) GNC Sensors 
-%    a2) Mission Sensors 
-%      a21) Target Identification 
-%      a22) Threat Avoidance 
-%  b) Communications 
 %  c) Power Management System 
-%  d) Sub-Vehicle (if any)
+%  b) Communications 
+
 \section{Payload}
 \subsection{Sensor Suite}
-\subsubsection{Microsoft Kinect}
-The Kinect uses an infrared laser array of 640x480 points to provide depth information at 2048 levels of sensitivity. Beohawk points the Kinect sensor down at a 45$^\circ$ angle.  A ROS package uses the Kinect to produce a point cloud, which gives Beohawk a plane of vision with depth information.  Within this point cloud, there should be a kink where the floor is.  This allows us to estimate altitude.  We detect walls in a similar fashion, so that we can avoid colliding with the wall.
 
-\subsubsection{Camera}
+\subsubsection{Inertial Sensing Unit}
+
+\todo{sensor board stuff}
+
+\subsubsection{2D Visual Camera}
+
 Using a downward facing camera, the quadrotor runs an optical flow algorithm on the x86 processor to reduce drift.  A second, front-facing camera captures pictures for reading the signs above the doors.  The images are published through the wireless network to the base station, which runs SIFT to detect the Chief of Security's office via the sign above the door. The front camera is also responsible for detecting the blue security light.  The bottom camera is used to identify the flash drive.
 
+\subsubsection{3D Infrared Depth Camera}
+
+We have installed Microsoft Kinect onto our robot as a novel solution to SLAM and navigation problem. This device serves as a depth sensing camera, which provides an image of 640x480 points at 15Hz; each point contains information at 2048 levels of sensitivity. This depth camera look downward at a 45$^\circ$ angle from horizon.
+
 \subsubsection{Sonar}
-Though the quadrotor has an estimate of altitude from the Kinect, it may be noisy and as such, the quadrotor also employs sonar to determine altitude.  A \todo{model/part number} is installed facing downwards.
 
-\subsubsection{Target Identification}
-
-Since the USB is a black object located on a white table surface, simply using a edge or contrast detection algorithm will easily identify the USB as a salient feature. While the 3D visual sensor may not be enough accurate to tell the dimension of the USB, it can sense the much larger box containing the USB and therefore helps a lot in target identification. 
-
-Identifying the signatures on the doors to different rooms is a tough task, because arabic alphabets can be hard to identify by using traditional OCR technology, especially in the case that our robot may look at the signature in one given perspective, which result in a affine transformation of the signature image that makes the identification process harder. We use a scale/rotation invarient feature detection algorithm called "SURF" to tackle this problem. Basically this algorithm tries to match the picture it sees and the template in the database by trying numerous cases of different transformations. This algorithm is proved successful in matching pictures regardless of scale, rotation or gradient constraints.
-
-\subsubsection{Threat Avoidance}
-\todo{How will we dodge the laser tripwires?}
+Though the quadrotor has an estimate of altitude from infrared depth camera, the quadrotor also employs a downward-facing sonar to determine its altitude. A \todo{model/part number} is installed facing downwards.
 
 \subsection{Communications}
 
-A Wi-Fi network is established between an on-board computer and a ground station. This network is time-synchronized and supports functionalities on both machines to communicate with each other through the ROS message system. While camera sensors are well supported by ROS, inertial sensor data and motor command have to go through serial communication. Since serial communication has not been implemented in ROS distribution so far, we developed a serial communication node that provides a protocol for exchanging messages safely through serial communication, which greatly improves the reliability of whole system. The sensor board communicates with the power board with I$^2$C technology at \todo{n} Hz. It also connects to an RC control device that operates at \todo{n} GHz. Inertial sensors are read at \todo{n} Hz, while visual sensing streams has a rate of 30 Hz for 2D images and a rate of 15 Hz for depth images.
+A Wi-Fi network is established between an on-board computer and a ground station. This network is time-synchronized and supports functionalities on both machines to communicate with each other through the ROS message system. While camera sensors are well supported by ROS, inertial sensor data and motor command have to go through serial communication. Since serial communication has not been implemented in ROS distribution so far, we developed a serial communication node that provides a protocol for exchanging messages safely through serial communication, which greatly improves the reliability of whole system. The sensor board communicates with the power board with I$^2$C technology at \todo{n} Hz. It also connects to an RC control device that operates at \todo{n} GHz. Inertial sensors are read at \todo{n} Hz, while visual sensing streams has a rate of 30 Hz for 2D images and a rate of 15 Hz for 3D depth images.
 
 \subsection{Power Management System}
-Beohawk is powered by a 7.4V 500mAh Lithium-Polymer battery pack, which provides enough energy to run at least ten minutes. A power regulator board controls the battery and motor speed.  In the event of low power, the base station initiates a controlled descent to avoid damage to the quadrotor. 
+
+Beohawk is powered by a 7.4V 500mAh Lithium-Polymer battery pack, which provides enough energy to run at least ten minutes. A power regulator board controls the battery and motor speed.  In the event of low power, the base station initiates a controlled descent to avoid damage to the quadrotor.
 
 %5) Operations	10
 %  a) Flight Preparations 
