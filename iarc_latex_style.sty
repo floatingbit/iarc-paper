@@ -2,28 +2,39 @@
 \renewcommand{\rmdefault}{ptm}
 \renewcommand{\ttdefault}{pcr}
 
+\usepackage{mathptmx}
+
 % Margins
-\headheight=0pt
-\headsep=0pt
-\topmargin=-1in
-\oddsidemargin=-1in
-\evensidemargin=-1in
-\advance\topmargin by1in
-\advance\oddsidemargin by1in
-\advance\evensidemargin by1in
-\textwidth=\paperwidth
-\advance\textwidth by-1in
-\advance\textwidth by-1in
-\hsize=\textwidth
-\textheight=\paperheight
-\advance\textheight by-1in
-\advance\textheight by-1in
-\vsize=\textheight
-\@colroom=\vsize
-\@colht=\vsize
+\usepackage[margin=1in]{geometry}
+%\headheight=0pt
+%\headsep=0pt
+%\topmargin=-1in
+%\oddsidemargin=-1in
+%\evensidemargin=-1in
+%\advance\topmargin by1in
+%\advance\oddsidemargin by1in
+%\advance\evensidemargin by1in
+%\textwidth=\paperwidth
+%\advance\textwidth by-1in
+%\advance\textwidth by-1in
+%\hsize=\textwidth
+%\textheight=\paperheight
+%\advance\textheight by-1in
+%\advance\textheight by-1in
+%\vsize=\textheight
+%\@colroom=\vsize
+%\@colht=\vsize
+
+% Footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0px}
+\fancyhf{}
+\fancyfoot[c]{\textsf \thepage}
+
 
 % 14pt spacing
-\renewcommand{\baselinestretch}{1.0}
+\renewcommand{\baselinestretch}{1.16}
 
 % Disable indentation, set paragraph skip
 %\setlength{\parindent}{0.0in}
@@ -53,7 +64,7 @@
 \def\endabstract{\end{minipage}\end{center}}
 
 % Style sections
-%\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{0}
 
 \def\section{\@startsection {section}{1}{\z@}{-3.5ex plus -1ex minus 
     -.2ex}{0.1ex plus .2ex}{\bf\uppercase}}
@@ -66,6 +77,9 @@
 \def\subparagraph{\@startsection
      {subparagraph}{4}{\parindent}{3.25ex plus 1ex minus 
      .2ex}{-1em}{\normalsize\bf}}
+     
+% Italicize captions
+\def\captionit#1{\caption{\textit{#1}}}
 
 \usepackage{color}
 % Debugging
